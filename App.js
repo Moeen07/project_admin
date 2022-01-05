@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button,Image,TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Button,Image,TextInput,FlatList,SafeAreaView } from 'react-native';
 import {useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -166,17 +166,36 @@ function DeleteBooks() {
 
 function ViewBooks() {
 
-  const getData = async () => {
+const [toDisplay, setToDisplay] = useState([])
+React.useEffect(()=>{Display()},[])
+ 
+
+  const Display = async () =>{
+
     const response = await fetch(`${FIREBASE_API_ENDPOINT}/books.json`);
-    const data = await response.json();
-    console.log(data);
-  };
+    const data2 = await response.json();
+    const array = Object.values(data2)
+    console.log(data2)
+    const map = array.map((ele)=>{
+
+      setToDisplay((toDisplay)=>[...toDisplay, ele.bookname])
+      setToDisplay((toDisplay)=>[...toDisplay, ele.authorname])
+      setToDisplay((toDisplay)=>[...toDisplay, ele.Description])
+  })
+  
+  }
+
   return(
+
     <View>
-      <Button
-        style={{ marginTop: 20, maginBottom: 20 }}
-        title="View Books"
-        onPress={() => getData()}
+      <FlatList
+        data={toDisplay}
+        renderItem={(item)=> {
+          return (
+            <Text style={{fontSize:18}}>{toDisplay[item.index]}</Text>
+          )
+        }}
+        keyExtractor={(item,index)=>{index.toString()}}
       />
     </View>
   )
