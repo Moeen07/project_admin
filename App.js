@@ -124,7 +124,6 @@ function AddBooks() {
     <View style={{flex:1, backgroundColor: 'white'}}>
       
       <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Price (Rupees)</Text>
-        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}/>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
                     onChangeText={setPrice}/>
 
@@ -170,8 +169,11 @@ function DeleteBooks() {
 
 function ViewBooks() {
 
-const [toDisplay, setToDisplay] = useState([])
-React.useEffect(()=>{Display()},[])
+  const [getName, setName] = useState([])
+  const [getAuthor, setAuthor] = useState([])
+  const [getDesc, setDesc] = useState([])
+  const [getPrice, setPrice] = useState([]);
+  React.useEffect(()=>{Display()},[])
  
 
   const Display = async () =>{
@@ -179,24 +181,30 @@ React.useEffect(()=>{Display()},[])
     const response = await fetch(`${FIREBASE_API_ENDPOINT}/books.json`);
     const data2 = await response.json();
     const array = Object.values(data2)
-    console.log(data2)
     const map = array.map((ele)=>{
 
-      setToDisplay((toDisplay)=>[...toDisplay, ele.bookname])
-      setToDisplay((toDisplay)=>[...toDisplay, ele.authorname])
-      setToDisplay((toDisplay)=>[...toDisplay, ele.Description])
+      setName((getName)=>[...getName, ele.bookname])
+      setAuthor((getAuthor)=>[...getAuthor, ele.authorname])
+      setDesc((getDesc)=>[...getDesc, ele.Description])
+      setPrice((getPrice)=>[...getPrice, ele.Price])
   })
-  
   }
+  if(getName){
 
+  
   return(
     
     <View>
       <FlatList
-        data={toDisplay}
-        renderItem={(item)=> {
+        data={getName}
+        renderItem={(item,index)=> {
           return (
-            <Text style={{fontSize:18}}>{toDisplay[item.index]}</Text>
+            <View>
+            <Text style={{fontSize:28}}>{getName[item.index]}</Text>
+            <Text style={{fontSize:28}}>{getAuthor[item.index]}</Text>
+            <Text style={{fontSize:28}}>{getDesc[item.index]}</Text>
+            <Text style={{fontSize:28}}>{getPrice[item.index]}</Text>
+            </View>
           )
         }}
         keyExtractor={(item,index)=>{index.toString()}}
@@ -204,6 +212,13 @@ React.useEffect(()=>{Display()},[])
     </View>
     
   )
+  }
+  else{
+    return(
+      <View>
+      </View>
+    )
+  }
 }
 
 function Logout() {
