@@ -101,6 +101,7 @@ function AddBooks() {
   const [getName, setName] = React.useState('');
   const [getAuthor, setAuthor] = React.useState('');
   const [getDesc, setDesc] = React.useState('');
+  const [getPrice, setPrice] = React.useState('');
 
   const postData = () => {
     var requestOptions = {
@@ -109,6 +110,7 @@ function AddBooks() {
         bookname: getName,
         authorname: getAuthor,
         Description: getDesc,
+        Price: getPrice
       }),
     };
 
@@ -121,8 +123,10 @@ function AddBooks() {
   return(
     <View style={{flex:1, backgroundColor: 'white'}}>
       
-      <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Image: </Text>
+      <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Price (Rupees)</Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}/>
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
+                    onChangeText={setPrice}/>
 
         <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Book Name: </Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
@@ -186,7 +190,7 @@ React.useEffect(()=>{Display()},[])
   }
 
   return(
-
+    
     <View>
       <FlatList
         data={toDisplay}
@@ -198,6 +202,7 @@ React.useEffect(()=>{Display()},[])
         keyExtractor={(item,index)=>{index.toString()}}
       />
     </View>
+    
   )
 }
 
