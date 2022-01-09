@@ -165,7 +165,7 @@ function EditBooks({route,navigation}) {
   const [getPrice, setPrice] = React.useState('');
 
   const editData = () => {
-    
+
   const id = array2[itemId];
     var requestOptions = {
       method: 'PATCH',
@@ -217,10 +217,36 @@ function EditBooks({route,navigation}) {
   )
 }
 
-function DeleteBooks() {
+function DeleteBooks({route,navigation}) {
+
+  const { itemId } = route.params;
+
+  const deleteData = () => {
+    const id = array2[itemId]
+    var requestOptions = {
+    method: 'DELETE',
+    };
+
+    fetch(`${FIREBASE_API_ENDPOINT}/books/${id}.json`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log('Delete Response:', result))
+      .catch((error) => console.log('error', error));
+  };
 
   return(
     <View>
+      <Text>Are you sure?</Text>
+      <Button
+        style={{ marginTop: 20, maginBottom: 20 }}
+        title="Yes"
+        onPress={() => deleteData()}
+        />
+      
+      <Button
+        style={{ marginTop: 20, maginBottom: 20 }}
+        title="No"
+        onPress={() => navigation.navigate('View Books')}
+        />
     </View>
   )
 }
@@ -273,6 +299,11 @@ function ViewBooks({navigation}) {
                       style={{ marginTop: 20, maginBottom: 20 }}
                       title="Edit book"
                       onPress={() => navigation.navigate('Edit Books',{ itemId: getID[item.index] })}
+                    />
+                    <Button
+                      style={{ marginTop: 20, maginBottom: 20 }}
+                      title="Delete book"
+                      onPress={() => navigation.navigate('Delete Books',{ itemId: getID[item.index] })}
                     />
                     
                   </View>
