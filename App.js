@@ -6,9 +6,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Constants from 'expo-constants';
 import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
-//import { db } from './firebase/firebase-config'; 
-//import {collection, getDocs} from 'firebase/firestore/lite';
-
 const FIREBASE_API_ENDPOINT = 'https://virtual-bookstore-35845-default-rtdb.firebaseio.com/';
 
 function Buttons(props){
@@ -153,8 +150,58 @@ function AddBooks() {
 
 function EditBooks() {
 
+  const [getName, setName] = React.useState('');
+  const [getAuthor, setAuthor] = React.useState('');
+  const [getDesc, setDesc] = React.useState('');
+  const [getPrice, setPrice] = React.useState('');
+
+  const editData = () => {
+  const id = '-MsyysuSTUty6-UebKTM';
+    var requestOptions = {
+      method: 'PATCH',
+      body: JSON.stringify({
+        bookname: getName,
+        authorname: getAuthor,
+        Description: getDesc,
+        Price: getPrice
+      }),
+    };
+
+    fetch(`${FIREBASE_API_ENDPOINT}/books/${id}.json`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.log('error', error));
+
+  }
+
+
   return(
-    <View>
+    <View style={{flex:1, backgroundColor: 'white'}}>
+      
+      <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Price (Rupees)</Text>
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
+                    onChangeText={setPrice}/>
+
+        <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Book Name: </Text>
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
+                    onChangeText={setName}/>
+
+        <Text style={{ marginLeft:'7%',  marginBottom:'2%'}}> Author Name: </Text>
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
+                    onChangeText={setAuthor}/>
+
+        <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Book Description: </Text>
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '25%', width: '85%', fontSize: 20, borderRadius:25, marginBottom:'3%'}}
+                    onChangeText={setDesc}/>
+        
+        <View style={{ marginTop: 20 }}>
+          <Button
+            style={{ marginTop: 20, maginBottom: 20 }}
+            title="Edit book"
+            onPress={() => editData()}
+          />
+        </View>
+
     </View>
   )
 }
@@ -209,9 +256,9 @@ function ViewBooks() {
         }}
         keyExtractor={(item,index)=>{index.toString()}}
       />
-    </View>
-    
+    </View>   
   )
+
   }
   else{
     return(
