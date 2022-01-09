@@ -7,6 +7,7 @@ import Constants from 'expo-constants';
 import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 const FIREBASE_API_ENDPOINT = 'https://virtual-bookstore-35845-default-rtdb.firebaseio.com/';
+var array2 = []
 
 function Buttons(props){
   const color = props.color
@@ -99,6 +100,7 @@ function AddBooks() {
   const [getAuthor, setAuthor] = React.useState('');
   const [getDesc, setDesc] = React.useState('');
   const [getPrice, setPrice] = React.useState('');
+  const [getID, setID] = React.useState('');
 
   const postData = () => {
     var requestOptions = {
@@ -107,7 +109,8 @@ function AddBooks() {
         bookname: getName,
         authorname: getAuthor,
         Description: getDesc,
-        Price: getPrice
+        Price: getPrice,
+        ID: getID
       }),
     };
 
@@ -123,6 +126,10 @@ function AddBooks() {
       <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Price (Rupees)</Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
                     onChangeText={setPrice}/>
+        
+        <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book ID</Text>
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
+                    onChangeText={setID}/>
 
         <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Book Name: </Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
@@ -148,7 +155,9 @@ function AddBooks() {
   )
 }
 
-function EditBooks() {
+function EditBooks({route,navigation}) {
+
+  const { itemId } = route.params;
 
   const [getName, setName] = React.useState('');
   const [getAuthor, setAuthor] = React.useState('');
@@ -156,7 +165,8 @@ function EditBooks() {
   const [getPrice, setPrice] = React.useState('');
 
   const editData = () => {
-  const id = '-MsyysuSTUty6-UebKTM';
+    
+  const id = array2[itemId];
     var requestOptions = {
       method: 'PATCH',
       body: JSON.stringify({
@@ -176,6 +186,7 @@ function EditBooks() {
 
 
   return(
+
     <View style={{flex:1, backgroundColor: 'white'}}>
       
       <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Price (Rupees)</Text>
@@ -214,12 +225,16 @@ function DeleteBooks() {
   )
 }
 
-function ViewBooks() {
+function ViewBooks({navigation}) {
 
   const [getName, setName] = useState([])
   const [getAuthor, setAuthor] = useState([])
   const [getDesc, setDesc] = useState([])
   const [getPrice, setPrice] = useState([]);
+  const [getID, setID] = useState([]);
+
+  const [getKeys, setKeys] = useState([]);
+
   React.useEffect(()=>{Display()},[])
  
 
@@ -228,36 +243,47 @@ function ViewBooks() {
     const response = await fetch(`${FIREBASE_API_ENDPOINT}/books.json`);
     const data2 = await response.json();
     const array = Object.values(data2)
+    array2 = Object.keys(data2)
+
     const map = array.map((ele)=>{
 
       setName((getName)=>[...getName, ele.bookname])
       setAuthor((getAuthor)=>[...getAuthor, ele.authorname])
       setDesc((getDesc)=>[...getDesc, ele.Description])
       setPrice((getPrice)=>[...getPrice, ele.Price])
+      setID((getID)=>[...getID, ele.ID])
   })
   }
   if(getName){
-
   
-  return(
+    return(
     
-    <View>
-      <FlatList
-        data={getName}
-        renderItem={(item,index)=> {
-          return (
-            <View>
-            <Text style={{fontSize:28}}>{getName[item.index]}</Text>
-            <Text style={{fontSize:28}}>{getAuthor[item.index]}</Text>
-            <Text style={{fontSize:28}}>{getDesc[item.index]}</Text>
-            <Text style={{fontSize:28}}>{getPrice[item.index]}</Text>
-            </View>
-          )
-        }}
-        keyExtractor={(item,index)=>{index.toString()}}
-      />
-    </View>   
-  )
+      <View style={{flex:1, backgroundColor: 'white'}}>
+        <FlatList
+          data={getName}
+          renderItem={(item,index)=> {
+            return (
+                <View style={{flexDirection: 'row', marginBottom:'10%', marginLeft: '5%'}}>
+                  <View style={{marginLeft:'5%'}}>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', marginTop:'15%',marginBottom:'5%'}}>{getName[item.index]}</Text>
+                    <Text style={{fontSize: 12, color:'grey', fontWeight: 'bold',marginBottom:'10%'}}> By:  {getAuthor[item.index]}</Text>
+                    <Text style={{fontSize:35, fontWeight:'bold'}}> Rs.  {getPrice[item.index]}</Text>
+                  
+                    <Button
+                      style={{ marginTop: 20, maginBottom: 20 }}
+                      title="Edit book"
+                      onPress={() => navigation.navigate('Edit Books',{ itemId: getID[item.index] })}
+                    />
+                    
+                  </View>
+                </View>
+            )
+          }}
+          keyExtractor={(item,index)=>{index.toString()}}
+        />
+      </View>
+      
+    )
 
   }
   else{
