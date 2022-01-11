@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button,Image,TextInput,FlatList,SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Button,Image,TextInput,FlatList,SafeAreaView, InteractionManager } from 'react-native';
 import {useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -294,16 +294,16 @@ function ViewBooks({navigation}) {
                     <Text style={{fontSize: 25, fontWeight: 'bold', marginTop:'15%',marginBottom:'5%'}}>{getName[item.index]}</Text>
                     <Text style={{fontSize: 12, color:'grey', fontWeight: 'bold',marginBottom:'10%'}}> By:  {getAuthor[item.index]}</Text>
                     <Text style={{fontSize:35, fontWeight:'bold'}}> Rs.  {getPrice[item.index]}</Text>
-                  
+                                      
                     <Button
                       style={{ marginTop: 20, maginBottom: 20 }}
                       title="Edit book"
-                      onPress={() => navigation.navigate('Edit Books',{ itemId: getID[item.index] })}
+                      onPress={() => navigation.navigate('Edit Books',{ itemId: getName.indexOf(getName[item.index]) })}
                     />
                     <Button
                       style={{ marginTop: 20, maginBottom: 20 }}
                       title="Delete book"
-                      onPress={() => navigation.navigate('Delete Books',{ itemId: getID[item.index] })}
+                      onPress={() => navigation.navigate('Delete Books',{ itemId: getName.indexOf(getName[item.index]) })}
                     />
                     
                   </View>
