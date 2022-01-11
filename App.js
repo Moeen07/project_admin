@@ -9,6 +9,9 @@ import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 const FIREBASE_API_ENDPOINT = 'https://virtual-bookstore-35845-default-rtdb.firebaseio.com/';
 var array2 = []
 
+var username_Admin = 'Moonis07'
+var pass_Admin = 'pro123'
+
 function Buttons(props){
   const color = props.color
 
@@ -71,16 +74,36 @@ function Images(props){
 
 function AdminLogin({showLogin, hidelogin}) {
 
+  const [getAdminU, setAdminU] = React.useState('');
+  const [getAdminP, setAdminP] = React.useState('');
+
+  const verify = () =>{
+
+    if ((getAdminP == pass_Admin) && (getAdminU == username_Admin)){
+      
+      hidelogin(false)
+    }
+    else{
+      alert('Wrong Credentials')
+    }
+  }
+
   return(
     <View style={styles.container}>
       <View>
       <Image style={{marginLeft:'35%', marginRight:'50%', width:100, height:100, marginTop:'10%'}} source={require('./assets/logo.png')} />
         <Text style={{fontSize: 40, marginLeft:'5%', color:'white', fontWeight:'bold', marginTop: '7%'}}> Login! </Text>
+
         <Text style={{ marginLeft:'7%', color:'white', marginTop: '7%', marginBottom:'2%'}}> Username: </Text>
-        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue", color:'white', height: '10%', width: '85%', fontSize: 20, borderRadius:50}}  />
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue", color:'white', height: '10%', width: '85%', fontSize: 20, borderRadius:50}}  
+                    onChangeText={setAdminU}/>
+
         <Text style={{  marginLeft:'7%', color:'white', marginTop: '7%', marginBottom:'2%'}}> Password: </Text>
-        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue", color:'white', height: '10%', width: '85%', fontSize: 20, borderRadius:50, marginBottom: '10%'}}  />
-        <Buttons text = 'Let me in'  color = {'#ff9d32'} event= {()=> hidelogin(false) }/>
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue", color:'white', height: '10%', width: '85%', fontSize: 20, borderRadius:50, marginBottom: '10%'}}  
+                    secureTextEntry={true}
+                    onChangeText={setAdminP}/>
+
+        <Buttons text = 'Let me in'  color = {'#ff9d32'} event= {()=> verify() }/>
       </View>
     </View>
   )
@@ -383,7 +406,7 @@ const Drawer = createDrawerNavigator();
 function MyDrawer() {
   return (
     <Drawer.Navigator style={styles.container} >
-      <Drawer.Screen name="Home" component={BookManagement} options={({navigation}) =>({ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20}, headerRight: () => (<Button title = 'Logout' color = {'#e39ff6'} onPress={() => navigation.navigate('Logout')} />) })} />
+      <Drawer.Screen name="Home" component={BookManagement} options={({navigation}) =>({ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20}, headerRight: () => (<Button title = 'Logout' color = {'#e39ff6'} onPress={() => Logout()} />) })} />
       <Drawer.Screen name="Add Books" component={AddBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20} }} />
       <Drawer.Screen name="Edit Books" component={EditBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20} }} />
       <Drawer.Screen name="Delete Books" component={DeleteBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20} }} />
