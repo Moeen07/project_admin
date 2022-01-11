@@ -142,7 +142,8 @@ function AddBooks({navigation}) {
       
       <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Price (Rupees)</Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
-                    onChangeText={setPrice}/>
+                    onChangeText={setPrice}
+                    keyboardType = {'numeric'}/>
         
         <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Image URL</Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
@@ -212,6 +213,7 @@ function EditBooks({route,navigation}) {
       
       <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Price (Rupees)</Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
+                    keyboardType = 'numeric'
                     value={getPrice}
                     onChangeText={(getPrice)=>setPrice(getPrice)}
                     />
@@ -270,18 +272,23 @@ function DeleteBooks({route,navigation}) {
 
   return(
     <View>
-      <Text>Are you sure?</Text>
+      <Text style = {{fontSize: 30}}>Are you sure?</Text>
+
+      <View>
       <Button
         style={{ marginTop: 20, maginBottom: 20 }}
         title="Yes"
         onPress={() => deleteData()}
         />
+      </View>
       
+      <View>
       <Button
         style={{ marginTop: 20, maginBottom: 20 }}
         title="No"
         onPress={() => navigation.navigate('View Books')}
         />
+        </View>
     </View>
   )
 }
