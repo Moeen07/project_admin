@@ -157,12 +157,12 @@ function AddBooks() {
 
 function EditBooks({route,navigation}) {
 
-  const { itemId } = route.params;
+  const { itemId,bName,bAuthor,bPrice,bDesc } = route.params;
 
-  const [getName, setName] = React.useState('');
-  const [getAuthor, setAuthor] = React.useState('');
-  const [getDesc, setDesc] = React.useState('');
-  const [getPrice, setPrice] = React.useState('');
+  const [getName, setName] = React.useState(bName);
+  const [getAuthor, setAuthor] = React.useState(bAuthor);
+  const [getDesc, setDesc] = React.useState(bDesc);
+  const [getPrice, setPrice] = React.useState(bPrice);
 
   const editData = () => {
 
@@ -182,6 +182,8 @@ function EditBooks({route,navigation}) {
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
 
+      navigation.navigate('View Books')
+
   }
 
 
@@ -191,19 +193,27 @@ function EditBooks({route,navigation}) {
       
       <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book Price (Rupees)</Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
-                    onChangeText={setPrice}/>
+                    value={getPrice}
+                    onChangeText={(getPrice)=>setPrice(getPrice)}
+                    />
 
         <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Book Name: </Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
-                    onChangeText={setName}/>
+                    value={getName}
+                    onChangeText={(getName)=>setName(getName)}
+                    />
 
         <Text style={{ marginLeft:'7%',  marginBottom:'2%'}}> Author Name: </Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
-                    onChangeText={setAuthor}/>
+                    value={getAuthor}
+                    onChangeText={(getAuthor)=>setAuthor(getAuthor)}
+                    />
 
         <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Book Description: </Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '25%', width: '85%', fontSize: 20, borderRadius:25, marginBottom:'3%'}}
-                    onChangeText={setDesc}/>
+                    value={getDesc}
+                    onChangeText={(getDesc)=>setDesc(getDesc)}
+                    />
         
         <View style={{ marginTop: 20 }}>
           <Button
@@ -298,7 +308,8 @@ function ViewBooks({navigation}) {
                     <Button
                       style={{ marginTop: 20, maginBottom: 20 }}
                       title="Edit book"
-                      onPress={() => navigation.navigate('Edit Books',{ itemId: getName.indexOf(getName[item.index]) })}
+                      onPress={() => navigation.navigate('Edit Books',{ itemId: getName.indexOf(getName[item.index]),bName: getName[item.index],bAuthor: getAuthor[item.index],
+                        bPrice: getPrice[item.index], bDesc: getDesc[item.index]})}
                     />
                     <Button
                       style={{ marginTop: 20, maginBottom: 20 }}
