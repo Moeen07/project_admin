@@ -94,7 +94,7 @@ function BookManagement({navigation}) {
 
 }
 
-function AddBooks() {
+function AddBooks({navigation}) {
 
   const [getName, setName] = React.useState('');
   const [getAuthor, setAuthor] = React.useState('');
@@ -118,6 +118,8 @@ function AddBooks() {
       .then((response) => response.json())
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
+
+      navigation.navigate('Home')
   };
 
   return(
@@ -182,7 +184,7 @@ function EditBooks({route,navigation}) {
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
 
-      navigation.navigate('View Books')
+      navigation.navigate('Home')
 
   }
 
