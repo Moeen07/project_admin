@@ -55,12 +55,26 @@ function Options(props){
   );
 }
 
+function Images(props){
+  
+  return(
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={props.event}>
+        <Text>
+        <Image style={{width:120, height:180, }} source={props.image} />
+        </Text>
+      </TouchableOpacity>
+  );
+}
+
 
 function AdminLogin({showLogin, hidelogin}) {
 
   return(
     <View style={styles.container}>
       <View>
+      <Image style={{marginLeft:'35%', marginRight:'50%', width:100, height:100, marginTop:'10%'}} source={require('./assets/logo.png')} />
         <Text style={{fontSize: 40, marginLeft:'5%', color:'white', fontWeight:'bold', marginTop: '7%'}}> Login! </Text>
         <Text style={{ marginLeft:'7%', color:'white', marginTop: '7%', marginBottom:'2%'}}> Username: </Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue", color:'white', height: '10%', width: '85%', fontSize: 20, borderRadius:50}}  />
@@ -77,6 +91,7 @@ function BookManagement({navigation}) {
   return(
 
     <View style={{flex:1, backgroundColor: 'white'}}>
+      <Image style={{marginLeft:'35%', marginRight:'50%', width:100, height:100, marginTop:'10%', marginBottom:'10%'}} source={require('./assets/logo.png')} />
       <View style={{ alignSelf:'center'}}>
         <View style={{flexDirection: 'row', marginBottom:'10%', marginLeft:'10%'}}>
           <Options text = 'Add    Books'  color = {'#373a96'} event = {() => navigation.navigate('Add Books')}/>
@@ -100,7 +115,7 @@ function AddBooks({navigation}) {
   const [getAuthor, setAuthor] = React.useState('');
   const [getDesc, setDesc] = React.useState('');
   const [getPrice, setPrice] = React.useState('');
-  const [getID, setID] = React.useState('');
+  const [getImage, setImage] = React.useState('');
 
   const postData = () => {
     var requestOptions = {
@@ -110,7 +125,7 @@ function AddBooks({navigation}) {
         authorname: getAuthor,
         Description: getDesc,
         Price: getPrice,
-        ID: getID
+        picture: getImage
       }),
     };
 
@@ -129,9 +144,9 @@ function AddBooks({navigation}) {
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
                     onChangeText={setPrice}/>
         
-        <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Book ID</Text>
+        <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Image URL</Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
-                    onChangeText={setID}/>
+                    onChangeText={setImage}/>
 
         <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Book Name: </Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
@@ -165,6 +180,7 @@ function EditBooks({route,navigation}) {
   const [getAuthor, setAuthor] = React.useState(bAuthor);
   const [getDesc, setDesc] = React.useState(bDesc);
   const [getPrice, setPrice] = React.useState(bPrice);
+  const [getImage, setImage] = React.useState('');
 
   const editData = () => {
 
@@ -175,7 +191,8 @@ function EditBooks({route,navigation}) {
         bookname: getName,
         authorname: getAuthor,
         Description: getDesc,
-        Price: getPrice
+        Price: getPrice,
+        picture: getImage
       }),
     };
 
@@ -203,6 +220,12 @@ function EditBooks({route,navigation}) {
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
                     value={getName}
                     onChangeText={(getName)=>setName(getName)}
+                    />
+        
+        <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Image URL: </Text>
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
+                    value={getImage}
+                    onChangeText={(getImage)=>setImage(getImage)}
                     />
 
         <Text style={{ marginLeft:'7%',  marginBottom:'2%'}}> Author Name: </Text>
@@ -269,7 +292,7 @@ function ViewBooks({navigation}) {
   const [getAuthor, setAuthor] = useState([])
   const [getDesc, setDesc] = useState([])
   const [getPrice, setPrice] = useState([]);
-  const [getID, setID] = useState([]);
+  const [getImage, setImage] = useState([]);
 
   const [getKeys, setKeys] = useState([]);
 
@@ -289,7 +312,7 @@ function ViewBooks({navigation}) {
       setAuthor((getAuthor)=>[...getAuthor, ele.authorname])
       setDesc((getDesc)=>[...getDesc, ele.Description])
       setPrice((getPrice)=>[...getPrice, ele.Price])
-      setID((getID)=>[...getID, ele.ID])
+      setImage((getImage)=>[...getImage, ele.picture])
   })
   }
   if(getName){
@@ -302,6 +325,7 @@ function ViewBooks({navigation}) {
           renderItem={(item,index)=> {
             return (
                 <View style={{flexDirection: 'row', marginBottom:'10%', marginLeft: '5%'}}>
+                  <Image style={{ width:120, height:180}} source={{uri: getImage[item.index]}} />
                   <View style={{marginLeft:'5%'}}>
                     <Text style={{fontSize: 25, fontWeight: 'bold', marginTop:'15%',marginBottom:'5%'}}>{getName[item.index]}</Text>
                     <Text style={{fontSize: 12, color:'grey', fontWeight: 'bold',marginBottom:'10%'}}> By:  {getAuthor[item.index]}</Text>
