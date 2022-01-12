@@ -35,28 +35,6 @@ function Buttons(props){
   );
 }
 
-function Options(props){
-  const color = props.color
-
-  return(
-      <TouchableOpacity
-        style={{
-          backgroundColor: props.color,
-          width: '40%',
-          height: 100,
-          borderRadius: 25,
-          justifyContent: 'center',
-          alignSelf: 'center',
-        }}
-        disabled = {props.disabled}
-        activeOpacity={0.8}
-        onPress={props.event}>
-        <Text style={{ fontSize: 24, color: 'white', alignSelf: 'center', textAlign:'center'}}>
-          {props.text}
-        </Text>
-      </TouchableOpacity>
-  );
-}
 
 function Images(props){
   
@@ -115,18 +93,14 @@ function BookManagement({navigation}) {
 
     <View style={{flex:1, backgroundColor: 'white'}}>
       <Image style={{marginLeft:'35%', marginRight:'50%', width:100, height:100, marginTop:'10%', marginBottom:'10%'}} source={require('./assets/logo.png')} />
-      <View style={{ alignSelf:'center'}}>
-        <View style={{flexDirection: 'row', marginBottom:'10%', marginLeft:'10%'}}>
-          <Options text = 'Add    Books'  color = {'#373a96'} event = {() => navigation.navigate('Add Books')}/>
-          <Text style={{margin:'2%'}}> </Text>
-          <Options text = 'Edit   Books'  color = {'#373a96'} event = {() => navigation.navigate('Edit Books')}/>
-        </View>
-        <View style={{flexDirection: 'row', marginLeft:'10%'}}>
-          <Options text = 'Delete Books'  color = {'#373a96'} event = {() => navigation.navigate('Delete Books')}/>
-          <Text style={{margin:'2%'}}> </Text>
-          <Options text = 'View Books'  color = {'#373a96'} event = {() => navigation.navigate('View Books')}/>
-        </View>
-      </View>
+      
+          <Buttons text = 'Add Books'  color = {'#373a96'} event = {() => navigation.navigate('Add Books')}/>
+          <Text> </Text>
+          <Buttons text = 'View Books'  color = {'#373a96'} event = {() => navigation.navigate('View Books')}/>
+          <Text> </Text>
+          <Buttons text = 'Edit Books'  color = {'#373a96'} event = {() => navigation.navigate('View Books')}/>
+          <Text> </Text>
+          <Buttons text = 'Delete Books'  color = {'#373a96'} event = {() => navigation.navigate('View Books')}/>
     </View>
   )
 
@@ -168,7 +142,7 @@ function AddBooks({navigation}) {
                     onChangeText={setPrice}
                     keyboardType = {'numeric'}/>
         
-        <Text style={{ marginLeft:'7%', marginTop: '5%', marginBottom:'2%'}}> Image URL</Text>
+        <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Image URL</Text>
         <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '8%', width: '85%', fontSize: 20, borderRadius:20, marginBottom:'3%'}}
                     onChangeText={setImage}/>
 
@@ -181,16 +155,12 @@ function AddBooks({navigation}) {
                     onChangeText={setAuthor}/>
 
         <Text style={{ marginLeft:'7%', marginBottom:'2%'}}> Book Description: </Text>
-        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '25%', width: '85%', fontSize: 20, borderRadius:25, marginBottom:'3%'}}
+        <TextInput style={{alignSelf:'center', borderWidth: 2,borderColor: "slateblue",height: '24%', width: '85%', fontSize: 20, borderRadius:25, marginBottom:'3%'}}
                     onChangeText={setDesc}/>
         
-        <View style={{ marginTop: 20 }}>
-          <Button
-            style={{ marginTop: 20, maginBottom: 20 }}
-            title="Add Book"
-            onPress={() => postData()}
+          <Buttons text='Add Book' color='#373a96'  event={() => postData()}
           />
-        </View>
+          <Text> </Text>
 
     </View>
   )
@@ -264,14 +234,9 @@ function EditBooks({route,navigation}) {
                     value={getDesc}
                     onChangeText={(getDesc)=>setDesc(getDesc)}
                     />
-        
-        <View style={{ marginTop: 20 }}>
-          <Button
-            style={{ marginTop: 20, maginBottom: 20 }}
-            title="Edit book"
-            onPress={() => editData()}
+        <Buttons text='Edit Book' color='#373a96'  event={() => editData()}
           />
-        </View>
+          <Text> </Text>
 
     </View>
   )
@@ -294,24 +259,13 @@ function DeleteBooks({route,navigation}) {
   };
 
   return(
-    <View>
-      <Text style = {{fontSize: 30}}>Are you sure?</Text>
-
-      <View>
-      <Button
-        style={{ marginTop: 20, maginBottom: 20 }}
-        title="Yes"
-        onPress={() => deleteData()}
-        />
-      </View>
-      
-      <View>
-      <Button
-        style={{ marginTop: 20, maginBottom: 20 }}
-        title="No"
-        onPress={() => navigation.navigate('View Books')}
-        />
-        </View>
+    <View style={{flex:1, backgroundColor: 'white'}}>
+      <Text style = {{fontSize: 30, marginLeft:'3%',marginBottom:'5%',marginTop:'7%'}}>Are you sure?</Text>
+        <Buttons text='YES' color='#373a96'  event={() => deleteData()}
+          />
+          <Text> </Text>
+        <Buttons text='NO' color='#373a96'  event={() => navigation.navigate('View Books')}
+          />
     </View>
   )
 }
@@ -349,29 +303,39 @@ function ViewBooks({navigation}) {
   
     return(
     
-      <View style={{flex:1, backgroundColor: 'white'}}>
+     <View style={{flex:1, backgroundColor: 'white'}}>
         <FlatList
           data={getName}
           renderItem={(item,index)=> {
             return (
-                <View style={{flexDirection: 'row', marginBottom:'10%', marginLeft: '5%'}}>
+                <View style={{flexDirection: 'row', marginBottom:'10%', marginLeft: '5%',marginTop:'5%'}}>
                   <Image style={{ width:120, height:180}} source={{uri: getImage[item.index]}} />
                   <View style={{marginLeft:'5%'}}>
-                    <Text style={{fontSize: 25, fontWeight: 'bold', marginTop:'15%',marginBottom:'5%'}}>{getName[item.index]}</Text>
-                    <Text style={{fontSize: 12, color:'grey', fontWeight: 'bold',marginBottom:'10%'}}> By:  {getAuthor[item.index]}</Text>
+                    <Text style={{fontSize: 25, fontWeight: 'bold',marginBottom:'2%'}}>{getName[item.index]}</Text>
+                    <Text style={{fontSize: 12, color:'grey', fontWeight: 'bold',marginBottom:'2%'}}> By:  {getAuthor[item.index]}</Text>
                     <Text style={{fontSize:35, fontWeight:'bold'}}> Rs.  {getPrice[item.index]}</Text>
                                       
-                    <Button
-                      style={{ marginTop: 20, maginBottom: 20 }}
-                      title="Edit book"
+                    <TouchableOpacity
+                    style={{ backgroundColor: '#373a96',
+                    width:150,
+                    height:40,
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                    marginBottom:'2%'}}
                       onPress={() => navigation.navigate('Edit Books',{ itemId: getName.indexOf(getName[item.index]),bName: getName[item.index],bAuthor: getAuthor[item.index],
-                        bPrice: getPrice[item.index], bDesc: getDesc[item.index]})}
-                    />
-                    <Button
-                      style={{ marginTop: 20, maginBottom: 20 }}
-                      title="Delete book"
-                      onPress={() => navigation.navigate('Delete Books',{ itemId: getName.indexOf(getName[item.index]) })}
-                    />
+                        bPrice: getPrice[item.index], bDesc: getDesc[item.index]})}>
+                    <Text style={{ fontSize: 20, color:'white' ,alignSelf: 'center'}}> Edit Book </Text>
+                  </TouchableOpacity>
+
+                     <TouchableOpacity
+                    style={{ backgroundColor: '#373a96',
+                    width: 150,
+                    height: 40,
+                    borderRadius: 10,
+                    justifyContent: 'center',}}
+                      onPress={() => navigation.navigate('Delete Books',{ itemId: getName.indexOf(getName[item.index]) })}>
+                    <Text style={{ fontSize: 20, color:'white' ,alignSelf: 'center'}}> Delete Book</Text>
+                  </TouchableOpacity>
                     
                   </View>
                 </View>
@@ -380,7 +344,6 @@ function ViewBooks({navigation}) {
           keyExtractor={(item,index)=>{index.toString()}}
         />
       </View>
-      
     )
 
   }
@@ -408,9 +371,9 @@ function MyDrawer() {
     <Drawer.Navigator style={styles.container} >
       <Drawer.Screen name="Home" component={BookManagement} options={({navigation}) =>({ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20}, headerRight: () => (<Button title = 'Logout' color = {'#e39ff6'} onPress={() => Logout()} />) })} />
       <Drawer.Screen name="Add Books" component={AddBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20} }} />
-      <Drawer.Screen name="Edit Books" component={EditBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20} }} />
-      <Drawer.Screen name="Delete Books" component={DeleteBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20} }} />
       <Drawer.Screen name="View Books" component={ViewBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20} }} />
+      <Drawer.Screen name="Edit Books" component={EditBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20}, drawerItemStyle:{height: 0} }} />
+      <Drawer.Screen name="Delete Books" component={DeleteBooks} options={{ headerStyle: { backgroundColor: 'darkslateblue'}, headerTintColor: 'white', headerTitleStyle: {fontSize: 20}, drawerItemStyle:{height: 0} }} />
     </Drawer.Navigator>
   );
 }
@@ -438,11 +401,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#373a96',
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
